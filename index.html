@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>jmg runner</title>
+</head>
+<style>
+  .person {
+  padding: 20px;
+  background: white;
+  
+  }
+  .users {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: var(--brown);
+  padding: 10px;
+  width:100%;
+  grid-column: 1/7;
+  grid-row: 1/13;
+  grid-gap: 10px;
+  }
+
+  .person:hover {
+  
+  opacity: 0.7;
+  }
+</style>
+<body>
+
+  <div class="panel users" id='users_panel'>
+
+
+  </div>
+
+<script type="text/javascript">
+
+  let data = []
+    let url = "https://jsonplaceholder.typicode.com/users"
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        let obj_list = JSON.parse(this.responseText)
+        for (let user of obj_list) {
+          console.log({user})
+          data.push(user) //data.append() in python
+        }
+  let container = document.getElementById("users_panel")
+  for (let user of data) {
+  let grid_item = document.createElement("div");
+  let name_div = document.createElement("div");
+  let address_div = document.createElement("div");
+  name_div.innerHTML = user.name;
+  name_div.setAttribute("class", "name");
+  address_div.innerHTML = user.address.city + ", " + user.address.state + ", " + user.address.suite;
+  address_div.setAttribute("class", "address");
+  grid_item.append(name_div);
+  grid_item.append(address_div);
+  container.append(grid_item);
+  grid_item.setAttribute("class", "person");
+  }
+      }
+  };
+    
+        xhttp.open("GET", url, true); //ajax call
+        xhttp.send();
+</script>
+
+</body>
+</html>
